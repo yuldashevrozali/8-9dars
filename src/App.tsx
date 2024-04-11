@@ -1,34 +1,37 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
 import './App.css'
+import { useState } from 'react';
+import Guest from './pages/Guest';
+import Teacher from './pages/Teacher';
+import Student from './pages/Student';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [selectvalue, setSelectvalue] = useState<string>('');
+
+  function hadnlechange(e: any) {
+    setSelectvalue(e.target.value);
+    localStorage.setItem('role', e.target.value)
+  }
+
+  console.log(selectvalue);
+
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <BrowserRouter>
+      <select id="role" onChange={hadnlechange} defaultValue="select">
+        <option selected value="select" disabled>Select Role</option>
+        <option value="guest">Guest</option>
+        <option value="teacher">Teacher</option>
+        <option value="student">Student</option>
+      </select>
+
+      <Link to={selectvalue == 'guest' ? ('guest') : selectvalue == 'teacher' ? ('teacher') : selectvalue == 'student' ? ('student') : ('')}>kirish</Link>
+      <Routes>
+        <Route path='/guest' element={<Guest />}></Route>
+        <Route path='/teacher' element={<Teacher />}></Route>
+        <Route path='/student' element={<Student />}></Route>
+      </Routes>
+    </BrowserRouter>
   )
 }
 
